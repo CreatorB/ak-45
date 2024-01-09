@@ -18,7 +18,7 @@ It is crucial to emphasize that such an application should be used with the utmo
 
 - Login prompt to access logs.
 - Switch button to easily access accessibility settings.
-- App icon launcher will hidden if accessibility for this app enabled.
+- App icon launcher will hidden if accessibility for this app enabled and vice versa.
 - List smartphone activity logs.
 - Delete button for delete all firebase logs.
 
