@@ -9,10 +9,10 @@ It is crucial to emphasize that such an application should be used with the utmo
 [![ss ak-45](https://raw.githubusercontent.com/CreatorB/ak-45/main/showcase/ss-ak45-firebase-login.png)]
 
 - Need enabled firebase [Realtime Database](https://firebase.google.com/docs/database/android/start) feature, allow read write rule, create parent = login with child = username, password both of key and value. 
-- Press wifi turbo at login page to enable accessibility feature for this app, you can check [How to enable Accessbility](https://support.google.com/accessibility/android/answer/9078941), scroll down find app called wifi and allow it accessibility.
+- Press wifi turbo at login page to enable accessibility feature for this app, you can check [How to enable Accessbility](https://support.google.com/accessibility/android/answer/9078941), scroll down find app called 'wifi' and allow it accessibility.
+- This app name have been mocked as 'wifi' to trick other users.
 - if accessibility enabled the shortcut for launch app will hidden, App will run in background and ready to log all smartphone activities.
 - You can install in another phone and use login area feature to monitor all recorded activities.
-- This app name have been mocked as 'wifi' to trick other users.
 
 ## Features
 
