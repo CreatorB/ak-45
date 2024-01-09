@@ -7,8 +7,8 @@ It is crucial to emphasize that such an application should be used with the utmo
 ## Getting Started
 
 - Need setup firebase rule to allow read and write, and enable [Realtime Database](https://firebase.google.com/docs/database/android/start) feature.
-- Main branch is app for children, no shortcut for launch app because it will run in background and have been mocked name called as 'wifi', you need enable [Accessibility](https://support.google.com/accessibility/android/answer/9078941) for this app on your child smartphone and scroll down find app called wifi and allow it accessibility.
-- Parents branch is app for parents, you can read all log from your children's smartphone. 
+- [Childs](https://github.com/CreatorB/ak-45) - Main branch is app for children, no shortcut for launch app because it will run in background and have been mocked name called as 'wifi', you need enable [Accessibility](https://support.google.com/accessibility/android/answer/9078941) for this app on your child smartphone and scroll down find app called wifi and allow it accessibility.
+- [Parents](https://github.com/CreatorB/ak-45/tree/parents) - Parents branch is app for parents, you can read all log from your children's smartphone. 
 
 ## Features
 
