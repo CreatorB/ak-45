@@ -1,6 +1,5 @@
 package com.system.internet
 
-import Item
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -24,16 +23,13 @@ import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var items: MutableList<Item>
-//    private lateinit var adapter: ItemAdapter
     private  lateinit var dataListView: ListView
 
     var listItems = ArrayList<String>()
     var listKeys = ArrayList<String>()
     lateinit var adapter: ArrayAdapter<String>
     private val database = FirebaseDatabase.getInstance()
-    private val dbRef = database.getReference("users")
+    private val dbRef = database.getReference("data")
     lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,30 +56,6 @@ class MainActivity : AppCompatActivity() {
             true // Return true to indicate the long click was handled
         }
         addChildEventListener();
-
-//        recyclerView = findViewById(R.id.recyclerView)
-//        recyclerView.layoutManager = LinearLayoutManager(this)
-//        items = mutableListOf()
-//        adapter = ItemAdapter(items)
-//        recyclerView.adapter = adapter
-//
-//        val database = FirebaseDatabase.getInstance()
-//        val ref = database.getReference("users")
-//
-//        ref.addValueEventListener(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                items.clear()
-//                for (itemSnapshot in dataSnapshot.children) {
-//                    val item = itemSnapshot.getValue(Item::class.java)
-//                    item?.let { items.add(it) }
-//                }
-//                adapter.notifyDataSetChanged()
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                // Handle possible errors here
-//            }
-//        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

