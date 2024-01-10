@@ -30,6 +30,7 @@
             android:hint="username" />
 
         <EditText
+            android:inputType="textPassword"
             android:singleLine="true"
             android:imeOptions="actionGo"
             android:nextFocusDown="@id/login"
