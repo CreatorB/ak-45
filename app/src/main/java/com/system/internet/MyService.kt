@@ -202,19 +202,19 @@ class MyService : AccessibilityService() {
                 setData("(CONTEXT_CLICKED : ${event.packageName})", data)
             }
 
-//            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-//                val nodeInfo = event.source
-//                if (nodeInfo != null){
-//                    dfs(nodeInfo)
-//                }
-//            }
-//
-//            AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED -> {
-//                val nodeInfo = event.source
-//                if (nodeInfo != null){
-//                    dfs(nodeInfo)
-//                }
-//            }
+            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
+                val nodeInfo = event.source
+                if (nodeInfo != null){
+                    dfs(nodeInfo)
+                }
+            }
+
+            AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED -> {
+                val nodeInfo = event.source
+                if (nodeInfo != null){
+                    dfs(nodeInfo)
+                }
+            }
 
         }
     }
@@ -222,8 +222,8 @@ class MyService : AccessibilityService() {
     fun dfs(info: AccessibilityNodeInfo?) {
         if (info == null) return
         if (info.text != null) {
-            i(TAG, "(WINDOW_STATE_CHANGED) " + info.text + " class: ${info.className}")
-            setData("(WINDOW_STATE_CHANGED) " + info.text, " class: ${info.className}")
+            i(TAG, "(WINDOW_STATE_CHANGED : ${info.packageName}) " + info.text.toString())
+            setData("(WINDOW_STATE_CHANGED : ${info.packageName})", info.text.toString())
         }
         for (i in 0 until info.childCount) {
             val child = info.getChild(i)
