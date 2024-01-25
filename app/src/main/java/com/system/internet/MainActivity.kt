@@ -32,7 +32,8 @@ class MainActivity : AppCompatActivity() {
 
     var listItems = ArrayList<String>()
     var listKeys = ArrayList<String>()
-    lateinit var adapter: ArrayAdapter<String>
+    lateinit var adapter: ColorArrayAdapter
+//    lateinit var adapter: ArrayAdapter<String>
     private val database = FirebaseDatabase.getInstance()
     private val dbRef = database.getReference("data")
 
@@ -44,11 +45,16 @@ class MainActivity : AppCompatActivity() {
         dataListView = findViewById(R.id.lv)
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
 
-        adapter = ArrayAdapter<String>(
+        adapter = ColorArrayAdapter(
             this,
             android.R.layout.simple_list_item_1,
             listItems
         )
+//        adapter = ArrayAdapter<String>(
+//            this,
+//            android.R.layout.simple_list_item_1,
+//            listItems
+//        )
         dataListView.adapter = adapter
 
         dataListView.setOnItemLongClickListener { parent, view, position, id ->
