@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         progressBar = findViewById(R.id.progressBar)
         dataListView = findViewById(R.id.lv)
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
@@ -292,21 +291,4 @@ class MainActivity : AppCompatActivity() {
         dbRef.orderByKey().limitToFirst(LIMIT).addChildEventListener(childListener)
     }
 
-    override fun onBackPressed() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Confirm Exit")
-        builder.setMessage("Are you sure you want to exit?")
-
-        builder.setPositiveButton("Yes") { dialog, which ->
-            finish()
-        }
-
-        builder.setNegativeButton("No") { dialog, which ->
-            dialog.cancel()
-        }
-
-        // Show the dialog
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
-    }
 }
