@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var dataListView: ListView
     private lateinit var progressBar: ProgressBar
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var btnLoadMore: Button
 
     private val LIMIT = 1000
     private var lastKey: String? = null
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progressBar)
         dataListView = findViewById(R.id.lv)
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
+        btnLoadMore = findViewById(R.id.btnLoadMore)
 
         adapter = ColorArrayAdapter(
             this,
@@ -77,10 +79,16 @@ class MainActivity : AppCompatActivity() {
             ) {
                 // Check if the last item is visible and not currently loading more data
                 if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount != 0 && !isLoading) {
-                    loadMoreData()
+                    btnLoadMore.visibility = View.VISIBLE
+                } else {
+                    btnLoadMore.visibility = View.GONE
                 }
             }
         })
+        btnLoadMore.setOnClickListener {
+            btnLoadMore.visibility = View.GONE
+            loadMoreData()
+        }
 
         swipeRefreshLayout.setOnRefreshListener {
             // Refresh data when the user pulls down
@@ -105,6 +113,7 @@ class MainActivity : AppCompatActivity() {
 
         // Stop the refreshing animation
         swipeRefreshLayout.isRefreshing = false
+        btnLoadMore.visibility = View.GONE
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -132,6 +141,7 @@ class MainActivity : AppCompatActivity() {
             .setMessage("Are you sure you want to delete selected items?")
             .setPositiveButton("Yes") { dialog, which ->
                 progressBar.visibility = View.VISIBLE
+                btnLoadMore.visibility = View.GONE
 //                delete1000Data()
                 deleteDataLoaded()
             }
@@ -207,6 +217,7 @@ class MainActivity : AppCompatActivity() {
 //    }
 
     private fun loadMoreData() {
+        btnLoadMore.visibility = View.GONE
         isLoading = true
         // Update the query to load more items based on the lastKey
         dbRef.orderByKey().startAt(lastKey).limitToFirst(LIMIT + 1)
@@ -279,5 +290,23 @@ class MainActivity : AppCompatActivity() {
             override fun onCancelled(databaseError: DatabaseError) {}
         }
         dbRef.orderByKey().limitToFirst(LIMIT).addChildEventListener(childListener)
+    }
+
+    override fun onBackPressed() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Confirm Exit")
+        builder.setMessage("Are you sure you want to exit?")
+
+        builder.setPositiveButton("Yes") { dialog, which ->
+            finish()
+        }
+
+        builder.setNegativeButton("No") { dialog, which ->
+            dialog.cancel()
+        }
+
+        // Show the dialog
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 }
